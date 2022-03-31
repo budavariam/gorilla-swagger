@@ -1,5 +1,17 @@
 # gorilla-swagger
 
+I've used Swagger with Spring a long time ago, I was curious how can I add it to go with gorilla mux.
+
+## Getting started
+
+```bash
+go run .
+open http://localhost:8080/swaggerui/
+# enjoy!
+```
+
+## Inspiration and references
+
 - [Swagger in go](https://medium.com/@supun.muthutantrige/lets-go-everything-you-need-to-know-about-creating-a-restful-api-in-go-part-iv-52666c5221d4)
 - [goswagger usage](https://goswagger.io/use/spec.html)
 - [operation docs](https://goswagger.io/use/spec/operation.html)
