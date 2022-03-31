@@ -142,6 +142,10 @@ func main() {
 	//   "404":
 	//     "$ref": "#/responses/notFoundReq"
 	r.HandleFunc("/accounts/{id}", deleteAccountHandler).Methods("DELETE")
+
+	sh := http.StripPrefix("/swaggerui/", http.FileServer(http.Dir("./swaggerui/")))
+	r.PathPrefix("/swaggerui/").Handler(sh)
+	log.Println("Serving on localhost:8080...")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 func createAccountHandler(w http.ResponseWriter, r *http.Request) {
