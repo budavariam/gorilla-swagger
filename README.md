@@ -5,3 +5,5 @@
 - [operation docs](https://goswagger.io/use/spec/operation.html)
   - `swagger:operation [method] [path pattern] [?tag1 tag2 tag3] [operation id]`
 - [swagger:response](https://goswagger.io/use/spec/response.html)
+- [Swagger UI](https://github.com/swagger-api/swagger-ui)
+- [Serve SwaggerUI](https://ribice.medium.com/serve-swaggerui-within-your-golang-application-5486748a5ed4)
