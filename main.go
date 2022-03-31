@@ -36,13 +36,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//Account Json request payload is as follows,
-//{
-//  "id": "1",
-//  "first_name": "james",
-//  "last_name":  "bolt",
-//  "user_name":  "james1234"
-//}
 // Account request model
 type Account struct {
 	// Id of the account
@@ -60,6 +53,16 @@ type Account struct {
 type swaggAccountRes struct {
 	// in:body
 	Body Account
+}
+
+// Success response
+// swagger:response okResp
+type swaggRespOk struct {
+	// in:body
+	Body struct {
+		// HTTP status code 200 - OK
+		Code int `json:"code"`
+	}
 }
 
 // Error Bad Request
@@ -105,7 +108,7 @@ func main() {
 	//     "$ref": "#/responses/okResp"
 	//   "400":
 	//     "$ref": "#/responses/badReq"
-	r.HandleFunc("/accounts", createAccountHandler).Methods("POST")
+	r.HandleFunc("/accounts/", createAccountHandler).Methods("POST")
 	// swagger:operation GET /accounts/{id} accounts getAccount
 	// ---
 	// summary: Return an Account provided by the id.
