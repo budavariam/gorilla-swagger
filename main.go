@@ -8,7 +8,7 @@
 //     Schemes: http, https
 //     Host: localhost:8080
 //     Version: 1.0.0
-//     Contact: Supun Muthutantri<mydocs@example.com>
+//     Contact: Mátyás Budavári<budavariam@gmail.com>
 //
 //     Consumes:
 //     - application/json
@@ -91,59 +91,10 @@ func init() {
 	accountMap = make(map[string]Account)
 }
 func main() {
-	r := mux.NewRouter()
-	// swagger:operation POST /accounts/ accounts createAccount
-	// ---
-	// summary: Creates a new account.
-	// description: If account creation is success, account will be returned with Created (201).
-	// parameters:
-	// - name: account
-	//   description: account to add to the list of accounts
-	//   in: body
-	//   required: true
-	//   schema:
-	//     "$ref": "#/definitions/Account"
-	// responses:
-	//   "200":
-	//     "$ref": "#/responses/okResp"
-	//   "400":
-	//     "$ref": "#/responses/badReq"
+	router := mux.NewRouter()
+	r := router.PathPrefix("/api").Subrouter()
 	r.HandleFunc("/accounts/", createAccountHandler).Methods("POST")
-	// swagger:operation GET /accounts/{id} accounts getAccount
-	// ---
-	// summary: Return an Account provided by the id.
-	// description: If the account is found, account will be returned else Error Not Found (404) will be returned.
-	// parameters:
-	// - name: id
-	//   in: path
-	//   description: id of the account
-	//   type: string
-	//   required: true
-	// responses:
-	//   "200":
-	//     "$ref": "#/responses/accountRes"
-	//   "400":
-	//     "$ref": "#/responses/badReq"
-	//   "404":
-	//     "$ref": "#/responses/notFoundReq"
 	r.HandleFunc("/accounts/{id}", getAccountHandler).Methods("GET")
-	// swagger:operation DELETE /accounts/{id} accounts deleteAccount
-	// ---
-	// summary: Deletes requested account by account id.
-	// description: Depending on the account id, HTTP Status Not Found (404) or HTTP Status OK (200) may be returned.
-	// parameters:
-	// - name: id
-	//   in: path
-	//   description: account id
-	//   type: string
-	//   required: true
-	// responses:
-	//   "200":
-	//     "$ref": "#/responses/okResp"
-	//   "400":
-	//     "$ref": "#/responses/badReq"
-	//   "404":
-	//     "$ref": "#/responses/notFoundReq"
 	r.HandleFunc("/accounts/{id}", deleteAccountHandler).Methods("DELETE")
 
 	sh := http.StripPrefix("/swaggerui/", http.FileServer(http.Dir("./swaggerui/")))
@@ -151,6 +102,23 @@ func main() {
 	log.Println("Serving on localhost:8080...")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
+
+// swagger:operation POST /api/accounts/ accounts createAccount
+// ---
+// summary: Creates a new account.
+// description: If account creation is success, account will be returned with Created (201).
+// parameters:
+// - name: account
+//   description: account to add to the list of accounts
+//   in: body
+//   required: true
+//   schema:
+//     "$ref": "#/definitions/Account"
+// responses:
+//   "200":
+//     "$ref": "#/responses/okResp"
+//   "400":
+//     "$ref": "#/responses/badReq"
 func createAccountHandler(w http.ResponseWriter, r *http.Request) {
 	log.Print("Request received to create an Account")
 
@@ -163,6 +131,24 @@ func createAccountHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(account)
 }
+
+// swagger:operation GET /api/accounts/{id} accounts getAccount
+// ---
+// summary: Return an Account provided by the id.
+// description: If the account is found, account will be returned else Error Not Found (404) will be returned.
+// parameters:
+// - name: id
+//   in: path
+//   description: id of the account
+//   type: string
+//   required: true
+// responses:
+//   "200":
+//     "$ref": "#/responses/accountRes"
+//   "400":
+//     "$ref": "#/responses/badReq"
+//   "404":
+//     "$ref": "#/responses/notFoundReq"
 func getAccountHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
@@ -179,6 +165,24 @@ func getAccountHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w)
 	}
 }
+
+// swagger:operation DELETE /api/accounts/{id} accounts deleteAccount
+// ---
+// summary: Deletes requested account by account id.
+// description: Depending on the account id, HTTP Status Not Found (404) or HTTP Status OK (200) may be returned.
+// parameters:
+// - name: id
+//   in: path
+//   description: account id
+//   type: string
+//   required: true
+// responses:
+//   "200":
+//     "$ref": "#/responses/okResp"
+//   "400":
+//     "$ref": "#/responses/badReq"
+//   "404":
+//     "$ref": "#/responses/notFoundReq"
 func deleteAccountHandler(w http.ResponseWriter, r *http.Request) {
 	log.Print("Request received to delete an Account by account id")
 	//add your own flavor to this function :)
